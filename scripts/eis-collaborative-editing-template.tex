@@ -1,0 +1,147 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Collaborative editing in EIS group
+%  
+%  Let NN be your initials. 
+%  The following macros are defined: 
+%
+%  \NNINS{a}     - Suggest inserting the text a. 
+%  \NNDEL{a}     - Suggest deleting the text a. 
+%  \NNREP{a}{b}  - Suggest replacing a by b. 
+%  \NNSAY{a}     - Comment by saying a.
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   Required packages:
+% 
+%   \usepackage{xcolor}
+%   \usepackage{etoolbox}
+%   \usepackage[normalem]{ulem}
+%
+%   Place those in the file prefix.tex
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MARKUP switch
+
+\newtoggle{MARKUP}
+
+% Uncomment one of the two following lines: 
+\toggletrue{MARKUP}
+% \togglefalse{MARKUP}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Authors and their markup colors
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macro definitions
+
+% The macro \sout is from the ulem package. 
+% \usepackage[normalem]{ulem}
+\newrobustcmd{\STRIKETHROUGH}[1]{\sout{#1}}
+
+
+
+
+\newcommand{\tsSAY}[1]{\slshape\sffamily\color{#1}}
+\newcommand{\tsINITIALS}[2]{\hspace{0.2ex}\raisebox{0.7ex}{\color{#1}\tiny\bfseries (#2)}\hspace{0.2ex}}
+\newcommand{\tsWON}[2]{\color{#1}\sffamily\raisebox{0.2ex}{\footnotesize\itshape #2}}
+% highlighting for the EISCOM markup
+\newcommand{\tsHL}[1]{\hl{#1}}
+% \newcommand{\tsHL}[1]{\colorbox{yellow}{#1}}
+\newcommand{\tsDELETE}{\color{ColorDELETE}}
+
+\newcounter{EISDELETEENVCNT}
+\setcounter{EISDELETEENVCNT}{0}
+\newtoggle{SAVEMARKUP}
+\togglefalse{SAVEMARKUP}
+\newtoggle{STRIKEMODE}
+\togglefalse{STRIKEMODE}
+\newcommand{\CITE}[1]{\iftoggle{STRIKEMODE}{\textbackslash CITE\{#1\}}{\cite{#1}}}
+
+% commands
+\newcommand{\EISINITIALS}[2]{\iftoggle{MARKUP}{{\tsINITIALS{#2}{#1}}}{}}
+\newcommand{\EISCOREDELETE}[2]{\iftoggle{MARKUP}{\togglefalse{MARKUP}\toggletrue{STRIKEMODE}{\color{#1}\sout{#2}}\togglefalse{STRIKEMODE}\toggletrue{MARKUP}}{}}
+\newcommand{\EISREP}[4]{\EISDEL{#1}{#2}{#3}\EISINS{#1}{#2}{#4}}
+\newcommand{\EISDEL}[3]{\EISINITIALS{#1}{#2}\EISCOREDELETE{#2}{#3}}
+\newcommand{\EISINS}[3]{\EISINITIALS{#1}{#2}\iftoggle{MARKUP}{{\color{#2}#3}}{#3}}
+% accepted version
+\newcommand{\aEISREP}[4]{{\iftoggle{MARKUP}{{\color{ColorINSERT}{#4}}}{{#4}}}}
+\newcommand{\aEISDEL}[3]{{\iftoggle{MARKUP}{{\color{red}$\wr\wr$}}{}}}
+\newcommand{\aEISINS}[3]{{\iftoggle{MARKUP}{\color{ColorINSERT}}{}#3}}
+% postpone/protect version
+\newcommand{\pEISREP}[4]{\EISREP{#1}{#2}{#3}{#4}}
+\newcommand{\pEISDEL}[3]{\EISDEL{#1}{#2}{#3}}
+\newcommand{\pEISINS}[3]{\EISINS{#1}{#2}{#3}}
+% rejected/reverted version
+\newcommand{\rEISREP}[4]{{\iftoggle{MARKUP}{{\color{ColorREVERT}{#3}}}{{#3}}}}
+\newcommand{\rEISDEL}[3]{{\iftoggle{MARKUP}{{\color{ColorREVERT}{#3}}}{#3}}}
+\newcommand{\rEISINS}[3]{{\iftoggle{MARKUP}{{\color{ColorREVERT}$\wr\wr$}}{}}}
+% environments
+\newcommand{\EISENVDELIMITER}[4]{\noindent\raisebox{0.3ex}{\color{#2}\scriptsize\textbackslash #3\{#1#4\}}}
+\newcommand{\EISDELETEBEGIN}[2]{\stepcounter{EISDELETEENVCNT}%
+  \iftoggle{MARKUP}{\EISENVDELIMITER{#1}{#2}{begin}{DELETE}\tsDELETE%
+    \ifnumcomp{\value{EISDELETEENVCNT}}{=}{1}{\togglefalse{MARKUP}\toggletrue{SAVEMARKUP}}{}%
+  }{}}%
+\newcommand{\EISDELETEEND}[2]{%
+  \iftoggle{SAVEMARKUP}{%
+    \ifnumcomp{\value{EISDELETEENVCNT}}{=}{1}{%
+      \togglefalse{SAVEMARKUP}\toggletrue{MARKUP}%
+    }{}}{}%
+  \iftoggle{MARKUP}{\EISENVDELIMITER{#1}{#2}{end}{DELETE}}{}\addtocounter{EISDELETEENVCNT}{-1}%
+}%
+\newcommand{\EISINSERTBEGIN}[2]{\iftoggle{MARKUP}{\EISENVDELIMITER{#1}{#2}{begin}{INSERT}\color{#2}}{}}%
+\newcommand{\EISINSERTEND}[2]{\iftoggle{MARKUP}{\EISENVDELIMITER{#1}{#2}{end}{INSERT}\color{#2}}{}}%
+
+
+% commenting
+\newcommand{\EISSAY}[3]{{\iftoggle{MARKUP}{\tsSAY{#2} #1:~#3}{}}}
+\newcommand{\EISWON}[3]{{\iftoggle{MARKUP}{\tsINITIALS{#2}{(#1)}\,\tsWON{#2}{The reader wonders:} ``#3'' }{}}}
+% accepted versions: text is simply removed. 
+\newcommand{\aEISSAY}[3]{}
+\newcommand{\aEISWON}[3]{}
+% postpone/protect versions
+\newcommand{\pEISSAY}[3]{\EISSAY{#1}{#2}{#3}}
+\newcommand{\pEISWON}[3]{\EISWON{#1}{#2}{#3}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author Commands
+%
+\newcommand{\NNREP}[2]{{\EISREP{NN}{ColorMM}{#1}{#2}}}
+\newcommand{\NNDEL}[1]{{\EISDEL{NN}{ColorMM}{#1}}}
+\newcommand{\NNINS}[1]{{\EISINS{NN}{ColorMM}{#1}}}
+\newcommand{\aNNREP}[2]{{\aEISREP{NN}{ColorMM}{#1}{#2}}}
+\newcommand{\aNNDEL}[1]{{\aEISDEL{NN}{ColorMM}{#1}}}
+\newcommand{\aNNINS}[1]{{\aEISINS{NN}{ColorMM}{#1}}}
+\newcommand{\pNNREP}[2]{{\pEISREP{NN}{ColorMM}{#1}{#2}}}
+\newcommand{\pNNDEL}[1]{{\pEISDEL{NN}{ColorMM}{#1}}}
+\newcommand{\pNNINS}[1]{{\pEISINS{NN}{ColorMM}{#1}}}
+\newcommand{\rNNREP}[2]{{\rEISREP{NN}{ColorMM}{#1}{#2}}}
+\newcommand{\rNNDEL}[1]{{\rEISDEL{NN}{ColorMM}{#1}}}
+\newcommand{\rNNINS}[1]{{\rEISINS{NN}{ColorMM}{#1}}}
+\newenvironment{NNINSERT}{\EISINSERTBEGIN{NN}{ColorMM}}{\EISINSERTEND{NN}{ColorMM}}
+\newenvironment{NNDELETE}{\EISDELETEBEGIN{NN}{ColorMM}}{\EISDELETEEND{NN}{ColorMM}}
+\newcommand{\NNSAY}[1]{{\EISSAY{NN}{ColorMM}{#1}}}
+\newcommand{\NNWON}[1]{{\EISWON{NN}{ColorMM}{#1}}}
+\newcommand{\NNCOM}[2]{{\EISCOM{NN}{ColorMM}{#1}{#2}}}
+\newcommand{\aNNSAY}[1]{{\aEISSAY{NN}{ColorMM}{#1}}}
+\newcommand{\aNNWON}[1]{{\aEISWON{NN}{ColorMM}{#1}}}
+\newcommand{\pNNWON}[1]{{\pEISWON{NN}{ColorMM}{#1}}}
+\newcommand{\pNNSAY}[1]{{\pEISSAY{NN}{ColorMM}{#1}}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "binder"
+%%% End:

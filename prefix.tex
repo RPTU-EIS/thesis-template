@@ -1,0 +1,59 @@
+\documentclass[a4paper, 11pt, twoside]{article}
+\usepackage[en]{style-eis-latex/EIS}
+\usepackage{hyperref}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{svg}
+%\usepackage[acronym, toc, nonumberlist, automake]{glossaries}
+\usepackage{lscape}
+\usepackage{blindtext}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{xpatch}
+
+% \include{EIS-special}
+% \include{EIS-special}
+
+%===============================================================
+
+% Setup
+\usepackage[]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdftitle={EIS-RPTU Thesis Template},
+    pdfauthor   = {Author},
+    pdfkeywords = {Keyword1, Keyword2} ,
+    pdfpagemode=FullScreen,
+    }
+
+%===============================================================
+
+
+\begin{document}
+
+\pagenumbering{roman}
+
+\begin{titlepage} % Suppresses headers and footers on the title page
+
+	\centering % Centre everything on the title page
+	\vspace*{\baselineskip}
+	\vspace{8\baselineskip} % Whitespace above the title
+	
+	\LARGE\textcolor{rptudunkelblau}{This is the Title of the Work} \\
+	\vspace*{\baselineskip}
+	\textcolor{rptudunkelblau}{And this Work also has a very nice Subtitle}\\
+	\vspace*{\baselineskip}
+	\vspace{8\baselineskip}
+	\textcolor{rptudunkelblau}{Chair of Electronic Design Automation}\\
+	\vspace{1\baselineskip}
+	\includegraphics[width=0.25\textwidth]{images/EIS-Logo.png}\\
+    \vspace{1\baselineskip}
+	\scshape\Large \textcolor{rptudunkelblau}{Supervisor: Prof. Dr.-Ing. Wolfgang Kunz\\Advisor: Ph.D. Student}\\
+	
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\section*{}
+\newpage
