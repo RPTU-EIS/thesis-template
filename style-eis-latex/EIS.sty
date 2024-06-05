@@ -1,12 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% EIS Style for LaTeX Documents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ProvidesPackage{style-eis-latex/EIS}[2024/01/17, based on TUK-EIT by Matthias Jung and Christian De Schryver]
+\ProvidesPackage{style-eis-latex/EIS}[2024/06/04, based on TUK-EIT by Matthias Jung, Christian De Schryver and Julian Puderbach]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Language Settings and Options
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % defines a global token "isGerman" that can also be used in the LaTeX files later 
+\usepackage[english,ngerman]{babel}
 \RequirePackage{etoolbox}
 \newtoggle{isGerman}
 \togglefalse{isGerman}
@@ -15,16 +13,13 @@
 % default is English
 \DeclareOption{en}{\togglefalse{isGerman}}
 \DeclareOption{de}{\toggletrue{isGerman}}
-
-% set global font style to sans serif by passing [pt] option
-\DeclareOption{pt}{\renewcommand{\familydefault}{\sfdefault}}
 \ProcessOptions\relax
 
 % language support
 \iftoggle{isGerman}{
-  	\RequirePackage[ngerman]{babel}   % German language support 
+  	\usepackage[ngerman]{babel}   % German language support 
 }{
-	\RequirePackage[english]{babel} % English language support
+	\usepackage[english]{babel} % English language support
 }
 
 
@@ -34,10 +29,10 @@
 \RequirePackage{geometry}
 \geometry{
 	a4paper,
-	top=25.4mm,
-	left=25.4mm,
-	right=25.4mm,
-	bottom=25.4mm,
+	top=35.0mm,
+	left=30.0mm,
+	right=30.0mm,
+	bottom=25.0mm,
 	headsep=8mm,
 	footskip=10mm
 }
@@ -49,16 +44,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Standard Packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% set up unicode input:
-\RequirePackage[utf8]{inputenc}
-
-% set 8-bit font enconding
-% see: http://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
-\RequirePackage[T1]{fontenc}
-
-% Caption sizes
-\RequirePackage{caption}
-\captionsetup[figure]{font=footnotesize}
 
 % Breaking URLs with hyphens
 \RequirePackage[hyphens]{url}
@@ -75,13 +60,15 @@
 \RequirePackage{bm}
 
 % Get correct links for url in bibliography
-\RequirePackage[hidelinks]{hyperref}
+\RequirePackage[hidelinks,bookmarks,hypertexnames=false,debug]{hyperref}
+%\RequirePackage{hyperref}
+\RequirePackage{bookmark}
 
 % Balance columns on last page
 \RequirePackage{flushend}
 
-% Nice subfigures (a) and (b)
-\RequirePackage[caption=false]{subfig}
+% Nice figures (a) and (b)
+%\RequirePackage[caption=false]{subfig}
 
 % Get nice fractions as \nicefrac{1}{4}
 \RequirePackage{nicefrac}
@@ -94,10 +81,12 @@
 \RequirePackage{multirow}
 \newcommand{\minitab}[2][c]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
 \RequirePackage{tabularx}
+\RequirePackage{xltabular}  % for tabularx options with longtables i.e. for glossaries
+\RequirePackage{environ}    % for tabularx longtables in glossaries
 \newcolumntype{Y}{>{\raggedleft\arraybackslash}X}% raggedleft column X
 
 \iftoggle{isGerman}{
-	\RequirePackage[detect-all,output-decimal-marker=comma]{siunitx}
+	\RequirePackage[detect-all, output-decimal-marker = {,}]{siunitx}
 }{
 	\RequirePackage[detect-all]{siunitx}
 }
@@ -107,38 +96,45 @@
 \RequirePackage{stfloats} % allow double column table at the bottom
 
 % Clever references that automatically add Figure, Equation, Table, etc.
-\iftoggle{isGerman}{
-  	\RequirePackage[german, capitalize]{cleveref}
-}{
-	\RequirePackage[capitalize]{cleveref}
-}
+\RequirePackage[capitalize]{cleveref}
 
 % Other Packages:
-\RequirePackage{graphicx}
 \RequirePackage{paratype}
 \RequirePackage{titlesec}
 \RequirePackage{titling}
-
+\usepackage{booktabs}                   % für booktabs style von Tabellen
+\usepackage{tcolorbox}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Background and Corporate Design
+%% Background and RPTU Corporate Design
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Background image for title page
-\RequirePackage{wallpaper}
-\iftoggle{isGerman}{
-	\ThisCenterWallPaper{1.0}{style-eis-latex/backgrounds/bg_report_de.pdf}
-}{
-	\ThisCenterWallPaper{1.0}{style-eis-latex/backgrounds/bg_report_en_rptu.pdf}
-}
+% Background for title page
+\RequirePackage{eso-pic}    % for flexible Background options
+\RequirePackage{svg}        % for svg graphics
+% \usepackage{vcell}          % for vertical alignment in tables
 
+% Brand Design RPTU including RedHatText:
+\RequirePackage{fontspec}
 
-% Cooperate Design including PT-Sans:
-\newcommand{\pt}{\usefont{T1}{PTSans-TLF}{m}{n}}
-\newcommand{\ptc}{\usefont{T1}{PTSansCaption-TLF}{m}{n}}
+\setmainfont[ExternalLocation=./style-eis-latex/RedHatFont/fonts/proportional/static/ttf/]{RedHatText-Regular}[%
+Extension = .ttf,
+BoldFont = RedHatText-Bold,                         % default Bold Font
+ItalicFont = RedHatText-Italic,                     % default Italic Font
+BoldItalicFont = RedHatText-BoldItalic,             % default Bold Italic Font
+FontFace={md}{n}{Font=RedHatText-Medium},           % Medium Font
+FontFace={md}{it}{Font=RedHatText-MediumItalic},    % Medium Italic Font
+FontFace={li}{n}{Font=RedHatText-Light},            % Light Font
+FontFace={li}{it}{Font=RedHatText-LightItalic},     % Light Italic Font
+FontFace={bf}{n}{Font=RedHatText-Bold},             % Bold Font
+FontFace={bf}{it}{Font=RedHatText-BoldItalic}]%     % Bold Italic Font
 
-\titleformat{\section}{\LARGE\color{rptudunkelblau}\ptc}{\thesection}{1em}{}
-\titleformat{\subsection}{\Large\color{rptudunkelblau}\ptc}{\thesubsection}{1em}{}
-\titleformat{\subsubsection}{\large\color{rptublaugrau}\ptc}{\thesubsubsection}{1em}{}
+% example for using custom FontFace:
+% {\fontseries{md}\fontshape{n}\selectfont this is an example text for using the RedHatText Medium Font}
+
+\titleformat{\section}{\LARGE\bf\color{rptuschwarz}}{\thesection}{1em}{}
+\titleformat{\subsection}{\Large\bf\color{rptuschwarz}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\large\bf\color{rptuschwarz}}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}{\normalsize\bf\color{rptuschwarz}}{\theparagraph}{1em}{}
 
 % Color definitions from RPTU Brand Manual version 2022-09
 % https://www.startklar2023.de/fileadmin/startklar2023/Brand-Portal/220928_RPTU_Brand_Manual.pdf
@@ -155,29 +151,6 @@
 \definecolor{rptuorange}{RGB}{255,162,82}
 \definecolor{rptuschwarz}{RGB}{0,0,0}
 \definecolor{rptuweiss}{RGB}{255,255,255}
-
-\definecolor{background}{RGB}{175,209,233}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Listings
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\usepackage{listings}
-\lstdefinestyle{customc}{
-  belowcaptionskip=1\baselineskip,
-  breaklines=true,
-  xleftmargin=\parindent,
-  showstringspaces=false,
-  backgroundcolor=\color{background},
-  framesep=10pt,
-  xleftmargin=10pt,
-  xrightmargin=10pt,
-  basicstyle=\footnotesize\ttfamily
-}
-\lstset{escapechar=@,style=customc}
-
-\setlength{\parindent}{0em} 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -203,17 +176,17 @@
 
 
 % Titel generation
-\newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}
-\newcommand*{\@subtitle}{}
+%\newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}
+%\newcommand*{\@subtitle}{}
 
-\renewcommand*{\maketitle}{%
-    \thispagestyle{frontpage}
-    \vspace{2.5cm}
-	{\noindent\Huge\color{rptudunkelblau}\ptc\@title\unskip\strut\par}
-    {\noindent\LARGE\color{rptuschwarz}\ptc\@subtitle\unskip\strut\par}
-    {\noindent\pt\color{rptuhellblau}\itshape\@author\unskip\strut\par}
-    \vspace{1cm}
-}
+%\renewcommand*{\maketitle}{%
+%    \thispagestyle{frontpage}
+%    \vspace{2.5cm}
+%	{\noindent\Huge\bf\color{rptuschwarz}\@title\unskip\strut\par}
+%    {\noindent\LARGE\bf\color{rptuschwarz}\ptc\@subtitle\unskip\strut\par}
+%    {\noindent\color{rptuschwarz}\itshape\@author\unskip\strut\par}
+%    \vspace{1cm}
+%}
 
 
 % Provide \mail command that prints e-mail-adresses as <yyy@yyy.zz> and provides correct link 

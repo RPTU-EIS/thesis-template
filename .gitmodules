@@ -1,0 +1,3 @@
+[submodule "style-eis-latex/RedHatFont"]
+	path = style-eis-latex/RedHatFont
+	url = https://github.com/RedHatOfficial/RedHatFont
