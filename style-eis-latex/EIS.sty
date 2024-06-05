@@ -3,8 +3,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ProvidesPackage{style-eis-latex/EIS}[2024/06/04, based on TUK-EIT by Matthias Jung, Christian De Schryver and Julian Puderbach]
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Language Settings and Options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % defines a global token "isGerman" that can also be used in the LaTeX files later 
-\usepackage[english,ngerman]{babel}
 \RequirePackage{etoolbox}
 \newtoggle{isGerman}
 \togglefalse{isGerman}
@@ -21,6 +24,7 @@
 }{
 	\usepackage[english]{babel} % English language support
 }
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,6 +94,8 @@
 }{
 	\RequirePackage[detect-all]{siunitx}
 }
+
+
 
 \RequirePackage{threeparttable} % tables with footnotes
 \RequirePackage{makecell}

@@ -33,3 +33,5 @@ __pycache__
 *.texnicle
 *.swp
 *.swo
+
+binder.pdf
