@@ -24,7 +24,7 @@
 This LaTeX thesis template is based on the template provided by the Department of Electrical and Computer Engineering at RPTU Kaiserslautern-Landau, designed by Christian De Schryver, Matthias Jung and Julian Puderbach.
 
 ## How to use
-This LaTeX report template can be used easily with any TeX distribution by running ```make``` or with any LaTeX IDE. Just start with the file ```main.tex``` and go ahead with your changes. Everything is documented in the file itself.
+This LaTeX report template can be used easily with any TeX distribution or with any LaTeX IDE. Just start with the file ```binder.tex``` and go ahead with your changes. Everything is documented in the file itself.
 
 *Important*: This repository depends on a Git submodule (style-eis-latex/RedHatFont) that holds the font used by RPTU. Therefore, a regular ```git clone``` command is not sufficient to obain the submodule as well! Please use ```git clone --recursive``` instead.
 
