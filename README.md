@@ -19,6 +19,9 @@
 
 <br />
 
+##TL;DR
+* **Clone**: ```git clone --recursive https://github.com/RPTU-EIS/thesis-template.git```
+* Before using the template with **Overleaf**, follow the steps in [Using the Template with Overleaf](#using-the-template-with-overleaf)!
 
 ## About
 This LaTeX thesis template is based on the template provided by the Department of Electrical and Computer Engineering at RPTU Kaiserslautern-Landau, designed by Christian De Schryver, Matthias Jung and Julian Puderbach.
@@ -28,7 +31,9 @@ This LaTeX report template can be used easily with any TeX distribution or with 
 
 *Important*: This repository depends on a Git submodule (style-eis-latex/RedHatFont) that holds the font used by RPTU. Therefore, a regular ```git clone``` command is not sufficient to obain the submodule as well! Please use ```git clone --recursive``` instead.
 
-
+## Using the Template with Overleaf
+The included subrepositories are quite large and will prevent Overleaf from compiling or even make the upload impossible. When using Overleaf, a lot of functionality in this repository is not necessary and can be removed. This is done by executing the ```cleanup.py``` script. Do not run this script if you won't
+use Overleaf afterwards, as the script will also remove all git functionality!
 
 ## Build
 Use your favorite LaTeX IDE / editor or optionally open a terminal and use make. 
