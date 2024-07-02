@@ -19,7 +19,7 @@
 
 <br />
 
-##TL;DR
+## TL;DR
 * **Clone**: ```git clone --recursive https://github.com/RPTU-EIS/thesis-template.git```
 * Before using the template with **Overleaf**, follow the steps in [Using the Template with Overleaf](#using-the-template-with-overleaf)!
 
