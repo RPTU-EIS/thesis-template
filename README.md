@@ -22,6 +22,7 @@
 ## TL;DR
 * **Clone**: ```git clone --recursive https://github.com/RPTU-EIS/thesis-template.git```
 * Before using the template with **Overleaf**, follow the steps in [Using the Template with Overleaf](#using-the-template-with-overleaf)!
+* In Overleaf, you need to make sure to choose "LuaLaTeX" as the compiler and "binder.tex" as the main document in order to build the PDF file.
 
 ## About
 This LaTeX thesis template is based on the template provided by the Department of Electrical and Computer Engineering at RPTU Kaiserslautern-Landau, designed by Christian De Schryver, Matthias Jung and Julian Puderbach.
@@ -35,10 +36,12 @@ This LaTeX report template can be used easily with any TeX distribution or with 
 The included subrepositories are quite large and will prevent Overleaf from compiling or even make the upload impossible. When using Overleaf, a lot of functionality in this repository is not necessary and can be removed. This is done by executing the ```cleanup.py``` script. Do not run this script if you won't
 use Overleaf afterwards, as the script will also remove all git functionality!
 
+In Overleaf, you need to make sure to choose "LuaLaTeX" as the compiler and "binder.tex" as the main document in the top-left menu in order to build the PDF file.
+
 ## Build
 Use your favorite LaTeX IDE / editor or optionally open a terminal and use make. 
 
-The template has been tested and successfully compiled with TeX Live, LuaTeX (Version 1.10.0) and BibTeX.
+The template has been tested and successfully compiled with TeX Live, LuaLaTeX (Version 1.10.0) and BibTeX.
 
 
 ## Known Dependencies
