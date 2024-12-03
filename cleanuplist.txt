@@ -1,6 +1,4 @@
-style-eis-latex/.gitattributes
 style-eis-latex/RedHatFont/.github
-style-eis-latex/.gitignore
 style-eis-latex/RedHatFont/mastering
 style-eis-latex/RedHatFont/source
 style-eis-latex/RedHatFont/metainfo
@@ -11,8 +9,6 @@ style-eis-latex/RedHatFont/CHANGELOG.md
 .gitattributes
 .gitignore
 .gitmodules
-style-eis-latex/.gitmodules
-style-eis-latex/LICENSE.txt
 style-eis-latex/README.md
 LICENSE.txt
 README.md
